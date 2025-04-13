@@ -68,51 +68,46 @@ const SearchPage = () => {
   }
 
   return (
-    <section className='bg-white'>
-      <div className='container mx-auto p-4'>
-        <p className='font-semibold'>Search Results: {data.length}  </p>
+    <section className="bg-white">
+  <div className="container mx-auto px-4 py-6 sm:py-8">
+    <p className="font-semibold text-base sm:text-lg mb-4">
+      Search Results: {data.length}
+    </p>
 
-        <InfiniteScroll
-              dataLength={data.length}
-              hasMore={true}
-              next={handleFetchMore}
-        >
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 py-4 gap-4'>
-              {
-                data.map((p,index)=>{
-                  return(
-                    <CardProduct data={p} key={p?._id+"searchProduct"+index}/>
-                  )
-                })
-              }
+    <InfiniteScroll
+      dataLength={data.length}
+      hasMore={true}
+      next={handleFetchMore}
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {data.map((p, index) => (
+          <CardProduct data={p} key={p?._id + "searchProduct" + index} />
+        ))}
 
-            {/***loading data */}
-            {
-              loading && (
-                loadingArrayCard.map((_,index)=>{
-                  return(
-                    <CardLoading key={"loadingsearchpage"+index}/>
-                  )
-                })
-              )
-            }
-        </div>
-        </InfiniteScroll>
-
-              {
-                //no data 
-                !data[0] && !loading && (
-                  <div className='flex flex-col justify-center items-center w-full mx-auto'>
-                    <img
-                      src={noDataImage} 
-                      className='w-full h-full max-w-xs max-h-xs block'
-                    />
-                    <p className='font-semibold my-2'>No Data found</p>
-                  </div>
-                )
-              }
+        {/* Loading Cards */}
+        {loading &&
+          loadingArrayCard.map((_, index) => (
+            <CardLoading key={"loadingsearchpage" + index} />
+          ))}
       </div>
-    </section>
+    </InfiniteScroll>
+
+    {/* No Data */}
+    {!data[0] && !loading && (
+      <div className="flex flex-col justify-center items-center w-full mx-auto mt-10 px-4">
+        <img
+          src={noDataImage}
+          alt="No data"
+          className="w-40 h-40 object-contain"
+        />
+        <p className="font-semibold text-center text-gray-600 mt-4">
+          No Data found
+        </p>
+      </div>
+    )}
+  </div>
+</section>
+
   )
 }
 
