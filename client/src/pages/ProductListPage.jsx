@@ -60,17 +60,16 @@ import { valideURLConvert } from '../utils/valideURLConvert'
       fetchProductdata()
     }, [params])
   
-  
     useEffect(() => {
+      if (!categoryId || !AllSubCategory?.length) return;
+    
       const sub = AllSubCategory.filter(s => {
-        const filterData = s.category.some(el => {
-          return el._id == categoryId
-        })
-  
-        return filterData ? filterData : null
-      })
-      setDisplaySubCategory(sub)
-    }, [params, AllSubCategory])
+        return s.category?.some(el => el._id === categoryId);
+      });
+    
+      setDisplaySubCategory(sub);
+    }, [categoryId, AllSubCategory]);
+    
 
   return (
     <section>
