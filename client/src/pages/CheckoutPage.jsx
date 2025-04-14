@@ -52,38 +52,33 @@ const CheckoutPage = () => {
         }
     }
 
-    const handleOnlinePayment = async()=>{
+    const handleOnlinePayment = async () => {
         try {
-            toast.loading("Loading...")
-            const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY
-            const stripePromise = await loadStripe(stripePublicKey)
-           
-            const response = await Axios({
-                ...summaryApi.payment_url,
-                data : {
-                  list_items : cartItemsList,
-                  addressId : addressList[selectAddress]?._id,
-                  subTotalAmt : totalPrice,
-                  totalAmt :  totalPrice,
-                }
-            })
-    
-            const { data : responseData } = response
-    
-            stripePromise.redirectToCheckout({ sessionId : responseData.id })
-            
-            if(fetchCartItem){
-              fetchCartItem()
+          toast.loading("Redirecting to payment...")
+      
+          const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY
+          const stripePromise = await loadStripe(stripePublicKey)
+      
+          const response = await Axios({
+            ...summaryApi.payment_url,
+            data: {
+              list_items: cartItemsList,
+              addressId: addressList[selectAddress]?._id,
+              subTotalAmt: totalPrice,
+              totalAmt: totalPrice,
             }
-            if(fetchOrder){
-              fetchOrder()
-            }
+          })
+      
+          const { data: responseData } = response
+      
+          // Redirect to Stripe — don't call fetchCartItem here
+          stripePromise.redirectToCheckout({ sessionId: responseData.id })
+      
         } catch (error) {
-            AxiosToastError(error)
+          AxiosToastError(error)
         }
       }
-    
-
+      
     return (
         <section className='bg-blue-50'>
             <div className='container mx-auto p-4 flex flex-col lg:flex-row w-full gap-5 justify-between'>
