@@ -71,7 +71,13 @@ const CheckoutPage = () => {
             const { data : responseData } = response
     
             stripePromise.redirectToCheckout({ sessionId : responseData.id })
-        
+            
+            if(fetchCartItem){
+              fetchCartItem()
+            }
+            if(fetchOrder){
+              fetchOrder()
+            }
         } catch (error) {
             AxiosToastError(error)
         }
@@ -88,7 +94,8 @@ const CheckoutPage = () => {
                         {
                             addressList.map((address, index) => {
                                 return (
-                                    <label htmlFor={"address" + index} className={!address.status && "hidden"}>
+                                    <label htmlFor={"address" + index} className={!address.status ? "hidden" : undefined}>
+
                                         <div className='border rounded p-3 flex gap-3 hover:bg-blue-50'>
                                             <div>
                                                 <input id={"address" + index} type='radio' value={index} onChange={(e) => setSelectAddress(e.target.value)} name='address' />
