@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useGlobalContext } from '../provider/GlobalProvider'
-import { Link } from 'react-router-dom'
 
 const Success = () => {
+  const location = useLocation()
   const { fetchCartItem, fetchOrder } = useGlobalContext()
 
   useEffect(() => {
@@ -15,7 +16,9 @@ const Success = () => {
         <p className='text-green-800 font-bold text-lg text-center'>
           {Boolean(location?.state?.text) ? location?.state?.text : "Payment"} Successfully
         </p>
-        <Link to="/" className="border border-green-900 text-green-900 hover:bg-green-900 hover:text-white transition-all px-4 py-1">Go To Home</Link>
+        <Link to="/" className="border border-green-900 text-green-900 hover:bg-green-900 hover:text-white transition-all px-4 py-1">
+          Go To Home
+        </Link>
     </div>
   )
 }
