@@ -52,32 +52,32 @@ const CheckoutPage = () => {
         }
     }
 
-    const handleOnlinePayment = async () => {
-        try {
-          toast.loading("Redirecting to payment...")
+    // const handleOnlinePayment = async () => {
+    //     try {
+    //       toast.loading("Redirecting to payment...")
       
-          const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY
-          const stripePromise = await loadStripe(stripePublicKey)
+    //       const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY
+    //       const stripePromise = await loadStripe(stripePublicKey)
       
-          const response = await Axios({
-            ...summaryApi.payment_url,
-            data: {
-              list_items: cartItemsList,
-              addressId: addressList[selectAddress]?._id,
-              subTotalAmt: totalPrice,
-              totalAmt: totalPrice,
-            }
-          })
+    //       const response = await Axios({
+    //         ...summaryApi.payment_url,
+    //         data: {
+    //           list_items: cartItemsList,
+    //           addressId: addressList[selectAddress]?._id,
+    //           subTotalAmt: totalPrice,
+    //           totalAmt: totalPrice,
+    //         }
+    //       })
       
-          const { data: responseData } = response
+    //       const { data: responseData } = response
       
-          // Redirect to Stripe — don't call fetchCartItem here
-          stripePromise.redirectToCheckout({ sessionId: responseData.id })
+    //       // Redirect to Stripe — don't call fetchCartItem here
+    //       stripePromise.redirectToCheckout({ sessionId: responseData.id })
       
-        } catch (error) {
-          AxiosToastError(error)
-        }
-      }
+    //     } catch (error) {
+    //       AxiosToastError(error)
+    //     }
+    //   }
       
     return (
         <section className='bg-blue-50'>
@@ -136,7 +136,7 @@ const CheckoutPage = () => {
                         </div>
                     </div>
                     <div className='w-full flex flex-col gap-4'>
-                        <button className='py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold' onClick={handleOnlinePayment}>Online Payment</button>
+                        {/* <button className='py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold' onClick={handleOnlinePayment}>Online Payment</button> */}
 
                         <button className='py-2 px-4 border-2 border-green-600 font-semibold text-green-600 hover:bg-green-600 hover:text-white' onClick={handleCashOnDelivery}>Cash on Delivery</button>
                     </div>
