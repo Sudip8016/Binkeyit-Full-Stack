@@ -17,40 +17,43 @@ const CheckoutPage = () => {
     const [selectAddress, setSelectAddress] = useState(0)
     const cartItemsList = useSelector(state => state.cartItem.cart)
     const navigate = useNavigate()
-
-    const handleCashOnDelivery = async() => {
+    const handleCashOnDelivery = async () => {
+        const toastId = toast.loading("Confirming Order...");
+      
         try {
-            const response = await Axios({
-              ...summaryApi.CashOnDeliveryOrder,
-              data : {
-                list_items : cartItemsList,
-                addressId : addressList[selectAddress]?._id,
-                subTotalAmt : totalPrice,
-                totalAmt :  totalPrice,
-              }
-            })
-  
-            const { data : responseData } = response
-  
-            if(responseData.success){
-                toast.success(responseData.message)
-                if(fetchCartItem){
-                  fetchCartItem()
-                }
-                if(fetchOrder){
-                  fetchOrder()
-                }
-                navigate('/success',{
-                  state : {
-                    text : "Order"
-                  }
-                })
-            }
-  
+          // Wait 5 seconds before proceeding
+          await new Promise(resolve => setTimeout(resolve, 4000));
+      
+          const response = await Axios({
+            ...summaryApi.CashOnDeliveryOrder,
+            data: {
+              list_items: cartItemsList,
+              addressId: addressList[selectAddress]?._id,
+              subTotalAmt: totalPrice,
+              totalAmt: totalPrice,
+            },
+          });
+      
+          const { data: responseData } = response;
+      
+          toast.dismiss(toastId); // Dismiss the loading toast
+      
+          if (responseData.success) {
+            toast.success(responseData.message);
+      
+            if (fetchCartItem) fetchCartItem();
+            if (fetchOrder) fetchOrder();
+      
+            navigate('/success', {
+              state: { text: "Order" }
+            });
+          }
         } catch (error) {
-          AxiosToastError(error)
+          toast.dismiss(toastId); // Dismiss even if error
+          AxiosToastError(error);
         }
-    }
+      };
+      
 
     // const handleOnlinePayment = async () => {
     //     try {
